@@ -1,0 +1,13 @@
+{
+  "name": "planet_project",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Marinijibia/Reading-CSV-data-with-node.git",
+  "author": "Umar Falalu",
+  "license": "MIT",
+  "dependencies": {
+    "csv-parse": "^5.5.6",
+    "nodemon": "^3.1.4"
+  }
+}
