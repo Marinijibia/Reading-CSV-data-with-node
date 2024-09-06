@@ -3,6 +3,9 @@
   "type": "module",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "dev": "nodemon express_server/server.js"
+  },
   "repository": "https://github.com/Marinijibia/Reading-CSV-data-with-node.git",
   "author": "Umar Falalu",
   "license": "MIT",
