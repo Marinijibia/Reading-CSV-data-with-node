@@ -1,9 +1,6 @@
 import express from "express";
-import {
-  createFriend,
-  getFriend,
-  getFriends,
-} from "./Controller/friends.controller.js";
+
+import friendRoute from "./Router/friends.router.js";
 
 const app = express();
 app.use(express.json());
@@ -21,9 +18,7 @@ app.get("/", (req, res) => {
   res.status(200).send(`Welcome to greatIdeas nig ltd`);
 });
 
-app.get("/friends", getFriends);
-app.get("/friends/:friendId", getFriend);
-app.post("/friends", createFriend);
+app.use("/friends", friendRoute);
 
 app.listen(PORT, () => {
   console.log(`App is listening to port ${PORT}...`);
