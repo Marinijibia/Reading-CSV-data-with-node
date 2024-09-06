@@ -1,75 +1,80 @@
 import express from "express";
 
-const app = express();
-const PORT = 5000;
-
 const friends = [
   {
     id: 0,
-    name: "Umar Falalu",
+    name: "Umar falalu",
   },
   {
     id: 1,
-    name: "Shamsudden Falalu",
+    name: "Shamsuddeen falalu",
   },
   {
-    id: 2,
-    name: "Abdullahi Falalu",
-  },
-  {
-    id: 3,
-    name: "Umar Umar",
+    id: 0,
+    name: "Abdullahi falalu",
   },
 ];
 
-app.use((req, res, next) => {
-  const startTime = Date.now();
-  console.log(`${req.method} ${req.url}`);
-  next();
-  const delta = Date.now() - startTime;
-  console.log(`${delta} ms`);
-});
-
+const app = express();
 app.use(express.json());
 
+const PORT = 3000;
+
+app.use((req, res, next) => {
+  const startTime = Date.now();
+  next();
+  const delta = Date.now() - startTime;
+  console.log(`${req.method} ${req.url} ${delta} ms`);
+});
+
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to FBC");
+  res.status(200).send(`Welcome to greatIdeas nig ltd`);
 });
 
 app.get("/friends", (req, res) => {
-  res.status(200).send(friends);
+  res.status(200).json(friends);
 });
 
-app.get("/friends/:friendId", (req, res) => {
+app.get("/friends/:friendId", (req, res, next) => {
   const friendId = +req.params.friendId;
   const friend = friends[friendId];
 
-  if (!friend) {
-    res.status(500).json({
-      error: "Friend Not Found",
-    });
-  }
+  try {
+    if (!friend) {
+      res.status(400).json({
+        error: "Friend not found",
+      });
+    }
 
-  res.status(200).send(friend);
+    res.status(200).json(friend);
+  } catch (error) {
+    next(error);
+  }
 });
 
-app.post("/friends", (req, res) => {
-  if (!req.body.name) {
-    res.status(400).json({
-      error: "Kindly provide a name",
-    });
+app.post("/friends", (req, res, next) => {
+  try {
+    const name = req.body.name;
+
+    if (!name) {
+      res.status(400).json({
+        error: "Kindly provide name",
+      });
+    }
+
+    const newFriend = {
+      name: req.body.name,
+      id: friends.length,
+    };
+
+    friends.push(newFriend);
+
+    res.status(200).send(newFriend);
+  } catch (error) {
+    next(error);
   }
-
-  const newFriend = {
-    name: req.body.name,
-    id: friends.length,
-  };
-
-  friends.push(newFriend);
-
-  res.json(newFriend);
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is listening to port ${PORT}...`);
+  console.log(`App is listening to port ${PORT}...`);
 });
