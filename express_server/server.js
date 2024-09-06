@@ -1,6 +1,7 @@
 import express from "express";
 
 import friendRoute from "./Router/friends.router.js";
+import fileRouter from "./Router/file.router.js";
 
 const app = express();
 app.use(express.json());
@@ -11,7 +12,7 @@ app.use((req, res, next) => {
   const startTime = Date.now();
   next();
   const delta = Date.now() - startTime;
-  console.log(`${req.method} ${req.url} ${delta} ms`);
+  console.log(`${req.method} ${req.baseUrl} ${req.url} ${delta} ms`);
 });
 
 app.get("/", (req, res) => {
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/friends", friendRoute);
+app.use("/picture", fileRouter);
 
 app.listen(PORT, () => {
   console.log(`App is listening to port ${PORT}...`);
